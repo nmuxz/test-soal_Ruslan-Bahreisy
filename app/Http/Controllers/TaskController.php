@@ -30,9 +30,13 @@ class TaskController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'status' => 'nullable|string|in:pending,completed',
+        ]);
+
         $task = Task::findOrFail($id);
         
-        // If status is provided, update it, otherwise default to 'completed'
+        // If status is provided and valid, update it, otherwise default to 'completed'
         $task->status = $request->input('status', 'completed');
         $task->save();
 
